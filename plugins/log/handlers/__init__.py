@@ -1,3 +1,3 @@
-from .graylog import GraylogProvider
-from .datadog import DatadogProvider
-from .local import LocalProvider
+from .graylog import GraylogHandler
+from .datadog import DatadogHandler
+from .local import LocalHandler

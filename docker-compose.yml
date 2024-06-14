@@ -13,6 +13,7 @@ services:
       - RABBIT_HOST=${RABBITMQ_IP_ADDRESS}
       - RABBIT_PORT=${RABBIT_PORT}
       - LOG_LEVEL=INFO
+      - LOG_HANDLER=local
     restart: always
     networks:
       - backend

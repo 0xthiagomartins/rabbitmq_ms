@@ -1,7 +1,7 @@
 # File: plugins/logger/handlers/local.py
 
 import logging, os
-from ..base import LogHandlerBase, LoggerFilter
+from ..base import LogHandlerBase
 
 
 class LocalHandler(LogHandlerBase):

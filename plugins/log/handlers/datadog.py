@@ -1,7 +1,7 @@
 import logging, os
 from datadog import initialize
 from datadog_logger import DatadogLogHandler
-from ..base import LogHandlerBase, LoggerFilter
+from ..base import LogHandlerBase
 from nameko.exceptions import ConfigurationError  # type: ignore
 
 
