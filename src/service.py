@@ -2,6 +2,7 @@ import logging
 from plugins.log import LoggerDependencyProvider
 from plugins.session import SessionDataDependency
 from nameko.rpc import rpc  # type: ignore
+from nameko.timer import timer  # type: ignore
 from nameko.events import (  # type: ignore
     EventDispatcher,
     event_handler,

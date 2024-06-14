@@ -1,8 +1,29 @@
-import logging
+import logging, os
 from abc import ABC, abstractmethod
+from nameko.exceptions import ConfigurationError  # type: ignore
 
 
 class LogProviderBase(ABC):
+
+    def configure_logger(self):
+        logger = logging.getLogger()
+        LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+        if not all([LOG_LEVEL]):
+            raise ConfigurationError(
+                "Missing Basic Log configuration environment variables."
+            )
+        logger.setLevel(LOG_LEVEL)
+
+        return logger
+
+    def configure_handlers(self):
+        formatter = logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+        )
+        for h in logging.root.handlers:
+            h.addFilter(LoggerFilter())
+            h.setFormatter(formatter)
+
     @abstractmethod
     def setup(self):
         pass

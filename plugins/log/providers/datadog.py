@@ -6,37 +6,34 @@ from nameko.exceptions import ConfigurationError  # type: ignore
 
 
 class DatadogProvider(LogProviderBase):
-    def setup(self):
-        api_key = os.getenv("DATADOG_API_KEY")
-        app_key = os.getenv("DATADOG_APP_KEY")
-
-        if not all([api_key, app_key]):
+    def __create_handler(self):
+        API_KEY = os.getenv("DATADOG_API_KEY")
+        APP_KEY = os.getenv("DATADOG_APP_KEY")
+        if not all([API_KEY, APP_KEY]):
             raise ConfigurationError(
                 "Missing Datadog configuration environment variables."
             )
 
         options = {
-            "api_key": api_key,
-            "app_key": app_key,
+            "api_key": API_KEY,
+            "app_key": APP_KEY,
         }
         initialize(**options)
-
-        logger = logging.getLogger()
-        logger.setLevel(logging.INFO)
-
-        # Add DatadogLogHandler
         handler = DatadogLogHandler()
-        handler.setLevel(logging.INFO)
-        formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
-        handler.setFormatter(formatter)
+        return handler
+
+    def __test_provider_connection(self, logger):
+        try:
+            logger.info("Test message sent to Graylog")
+        except Exception as e:
+            print(f"Error sending log message: {e}")
+
+    def setup(self):
+        handler = self.__create_handler()
+        logger = self.configure_logger()
         logger.addHandler(handler)
-
-        for h in logging.root.handlers:
-            h.addFilter(LoggerFilter())
-
-        self.logger = logger
+        self.configure_handlers()
+        self.__test_provider_connection(logger)
 
     def get_logger(self):
-        return self.logger
+        return logging.getLogger()
