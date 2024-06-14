@@ -1,1 +1,2 @@
 AMQP_URI: ${RABBIT_PROTOCOL:amqp}://${RABBIT_USER:guest}:${RABBIT_PASSWORD:guest}@${RABBIT_HOST:localhost}:${RABBIT_PORT:5672}
+SERVICE_NAME: "micro_service_A"

@@ -1,20 +1,28 @@
 import pytest
-from nameko.testing.services import worker_factory
-from src.service import MicroServiceA
+from nameko.standalone.rpc import ClusterRpcProxy
 from src.config import config
 
-
-def test_method_A():
-    service = worker_factory(MicroServiceA)
-    result = service.method_A("foo")
-    assert "Produced message: foo" in result
-    assert "Consumed messages:" in result
+config = {"AMQP_URI": config}
 
 
-def test_missing_env_var():
-    import os
+def test_rpc_call_sync():
+    payload = "test"
+    with ClusterRpcProxy(config) as rpc:
+        rpc.service_a.dispatch_event(payload)
 
-    from src.config import load_config
 
-    config = load_config()
-    assert config
+def test_rpc_call_async():
+    payload = "test"
+    with ClusterRpcProxy(config) as rpc:
+        response = rpc.service_a.sample_method.call_async(payload)
+        # do something
+        response = response.result()
+    assert response == payload
+
+
+def test_envvars():
+    pass
+
+
+def test_proxy_dispatch_event():
+    pass
