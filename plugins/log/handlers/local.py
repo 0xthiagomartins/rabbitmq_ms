@@ -1,10 +1,10 @@
-# File: plugins/logger/providers/local.py
+# File: plugins/logger/handlers/local.py
 
 import logging, os
-from ..base import LogProviderBase, LoggerFilter
+from ..base import LogHandlerBase, LoggerFilter
 
 
-class LocalProvider(LogProviderBase):
+class LocalHandler(LogHandlerBase):
     def __create_handler(self):
         LOG_FILE = os.getenv("LOCAL_LOG_FILE")
         if LOG_FILE:
@@ -13,7 +13,7 @@ class LocalProvider(LogProviderBase):
             handler = logging.StreamHandler()
         return handler
 
-    def __test_provider_connection(self, logger):
+    def __test_handler_connection(self, logger):
         try:
             logger.info("Test message sent to Local")
         except Exception as e:
@@ -24,7 +24,7 @@ class LocalProvider(LogProviderBase):
         handler = self.__create_handler()
         logger.addHandler(handler)
         self.configure_handlers()
-        self.__test_provider_connection(logger)
+        self.__test_handler_connection(logger)
 
     def get_logger(self):
         return logging.getLogger()

@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from nameko.exceptions import ConfigurationError  # type: ignore
 
 
-class LogProviderBase(ABC):
+class LogHandlerBase(ABC):
 
     def configure_logger(self):
         logger = logging.getLogger()

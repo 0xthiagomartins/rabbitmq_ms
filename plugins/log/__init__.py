@@ -1,26 +1,26 @@
 import os
-from nameko.extensions import DependencyProvider  # type: ignore
+from nameko.extensions import DependencyHandler  # type: ignore
 from nameko.exceptions import ConfigurationError  # type: ignore
-from .providers import GraylogProvider, DatadogProvider, LocalProvider
+from .handlers import GraylogHandler, DatadogHandler, LocalHandler
 
 
-class LoggerDependencyProvider(DependencyProvider):
+class LoggerDependencyHandler(DependencyHandler):
     def __init__(self):
-        self.provider_name = os.getenv("LOG_PROVIDER", "local").lower()
-        self.provider = None
+        self.handler_name = os.getenv("LOG_HANDLER", "local").lower()
+        self.handler = None
 
     def setup(self):
-        match self.provider_name:
+        match self.handler_name:
             case "graylog":
-                self.provider = GraylogProvider()
+                self.handler = GraylogHandler()
             case "datadog":
-                self.provider = DatadogProvider()
+                self.handler = DatadogHandler()
             case "local":
-                self.provider = LocalProvider()
+                self.handler = LocalHandler()
             case _:
-                raise ConfigurationError(f"Unsupported log provider: {_}")
+                raise ConfigurationError(f"Unsupported log handler: {_}")
 
-        self.provider.setup()
+        self.handler.setup()
 
     def get_dependency(self, worker_ctx):
-        return self.provider.get_logger()
+        return self.handler.get_logger()

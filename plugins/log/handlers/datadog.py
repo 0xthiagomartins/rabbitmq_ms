@@ -1,11 +1,11 @@
 import logging, os
 from datadog import initialize
 from datadog_logger import DatadogLogHandler
-from ..base import LogProviderBase, LoggerFilter
+from ..base import LogHandlerBase, LoggerFilter
 from nameko.exceptions import ConfigurationError  # type: ignore
 
 
-class DatadogProvider(LogProviderBase):
+class DatadogHandler(LogHandlerBase):
     def __create_handler(self):
         API_KEY = os.getenv("DATADOG_API_KEY")
         APP_KEY = os.getenv("DATADOG_APP_KEY")
@@ -22,7 +22,7 @@ class DatadogProvider(LogProviderBase):
         handler = DatadogLogHandler()
         return handler
 
-    def __test_provider_connection(self, logger):
+    def __test_handler_connection(self, logger):
         try:
             logger.info("Test message sent to Graylog")
         except Exception as e:
@@ -33,7 +33,7 @@ class DatadogProvider(LogProviderBase):
         logger = self.configure_logger()
         logger.addHandler(handler)
         self.configure_handlers()
-        self.__test_provider_connection(logger)
+        self.__test_handler_connection(logger)
 
     def get_logger(self):
         return logging.getLogger()
