@@ -1,8 +1,8 @@
 import logging
-from plugins.logging.providers import GraylogDependency
+from plugins.log import LoggerDependencyProvider
 from plugins.session import SessionDataDependency
-from nameko.rpc import rpc
-from nameko.events import (
+from nameko.rpc import rpc  # type: ignore
+from nameko.events import (  # type: ignore
     EventDispatcher,
     event_handler,
     BROADCAST,
@@ -15,7 +15,7 @@ class Service:
     name = "service_a"
 
     session_data: dict = SessionDataDependency()
-    # logger: logging.Logger = GraylogDependency()
+    logger: logging.Logger = LoggerDependencyProvider()
     dispatch = EventDispatcher()
 
     @rpc

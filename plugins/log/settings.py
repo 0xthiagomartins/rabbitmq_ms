@@ -1,16 +1,8 @@
 import logging
-from json import dumps
 
 
 DISCARD_FILES_OTHER_LIB = ["kombu", "pika", "werkzeug"]
 DISCARD_LEVELS_OTHER_LIB = [logging.INFO, logging.DEBUG]
-
-
-def get_data_to_log(data) -> str:
-    if isinstance(data, (dict, list)):
-        return dumps(data)
-    else:
-        return str(data)
 
 
 class LoggerFilter(logging.Filter):
