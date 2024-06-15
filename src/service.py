@@ -1,5 +1,5 @@
 import logging
-from plugins.log import LoggerDependencyProvider
+from plugins.log import LoggerDependency
 from plugins.session import SessionDataDependency
 from nameko.rpc import rpc  # type: ignore
 from nameko.timer import timer  # type: ignore
@@ -16,7 +16,7 @@ class Service:
     name = "service_a"
 
     session_data: dict = SessionDataDependency()
-    logger: logging.Logger = LoggerDependencyProvider()
+    logger: logging.Logger = LoggerDependency()
     dispatch = EventDispatcher()
 
     @rpc

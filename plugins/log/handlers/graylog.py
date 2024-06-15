@@ -1,10 +1,14 @@
 import logging, os
 import pygelf
-from ..base import LogHandlerBase
 from nameko.exceptions import ConfigurationError  # type: ignore
 
 
-class GraylogHandler(LogHandlerBase):
+class GraylogHandler:
+
+    def __init__(self):
+        handler = self.__create_handler()
+        return handler
+
     def __create_handler(self):
         HOST = os.getenv("GRAYLOG_HOST")
         PORT = int(os.getenv("GRAYLOG_PORT", 12201))
@@ -17,19 +21,3 @@ class GraylogHandler(LogHandlerBase):
 
         handler = pygelf.GelfUdpHandler(host=HOST, port=PORT, facility=FACILITY)
         return handler
-
-    def __test_handler_connection(self, logger):
-        try:
-            logger.info("Test message sent to Graylog")
-        except Exception as e:
-            print(f"Error sending log message: {e}")
-
-    def setup(self):
-        logger = self.configure_logger()
-        handler = self.__create_handler()
-        logger.addHandler(handler)
-        self.configure_handlers()
-        self.__test_handler_connection(logger)
-
-    def get_logger(self):
-        return logging.getLogger()
