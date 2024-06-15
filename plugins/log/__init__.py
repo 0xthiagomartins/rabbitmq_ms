@@ -1,7 +1,7 @@
 import logging, os
 from nameko.dependency_providers import DependencyProvider  # type: ignore
 from nameko.exceptions import ConfigurationError  # type: ignore
-from .handlers import GraylogHandler, DatadogHandler, LocalHandler
+from .handlers import GraylogHandler, DatadogHandler
 
 
 class LoggerFilter(logging.Filter):
@@ -24,7 +24,7 @@ class LoggerFilter(logging.Filter):
 
 class LoggerDependency(DependencyProvider):
     def __init__(self):
-        self.name = os.getenv("LOG_HANDLER").lower()
+        self.handler_name = os.getenv("LOG_HANDLER", "").lower()
         self.handler = None
 
     def __configure_logger(self):
@@ -57,11 +57,10 @@ class LoggerDependency(DependencyProvider):
         match self.handler_name:
             case "graylog":
                 handler = GraylogHandler()
+                logger.addHandler(handler)
             case "datadog":
                 handler = DatadogHandler()
-            case _:
-                raise ConfigurationError(f"Unsupported log handler: {_}")
-        logger.addHandler(handler)
+                logger.addHandler(handler)
         self.__configure_handlers()
         self.__test_handler_connection(logger)
 
