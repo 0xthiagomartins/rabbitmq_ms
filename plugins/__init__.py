@@ -11,6 +11,3 @@ class ClusterEventDispatcherProxy:
 
     def __exit__(self, exc_type, exc_value, traceback):
         pass
-
-    def dispatch_event(self, service_name, event_type, payload):
-        self.dispatch(service_name, event_type, payload)
