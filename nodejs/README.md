@@ -1,6 +1,8 @@
-# Ruby Example Code
+# NodeJS Example Code
 
-bundle install
+```sh
+npm install
+```
 
 To run each script you can simply open up two terminals and navigate to the project folder. In the first terminal you can run:
 
