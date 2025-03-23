@@ -5,13 +5,13 @@ bundle install
 To run each script you can simply open up two terminals and navigate to the project folder. In the first terminal you can run:
 
 ```sh
-ruby publisher.rb
+node publisher.js
 ```
 
 Then in the other terminal you can start the consumer:
 
 ```sh
-ruby consumer.rb
+node consumer.js
 ```
 
 The consumer.rb script keeps running until you close it, unlike publisher.rb. This means it can instantly consume any messages published to the queue. (To quit consumer.rb you can press CTRL+c in your terminal)
